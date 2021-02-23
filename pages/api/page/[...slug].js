@@ -1,9 +1,8 @@
-// 52 min
-// https://www.youtube.com/watch?v=zJqtmUm6oGE
 export default async (req, res) => {
   const {
     query: { slug },
   } = req;
+  const uri = slug.join('/');
 
   const QUERY_SINGLE_PAGE = `
     query SinglePage($id: ID!) {
@@ -13,6 +12,7 @@ export default async (req, res) => {
       }
     }
   `;
+
   const headers = { 'Content-Type': 'application/json' };
 
   const data = await fetch(process.env.WORDPRESS_LOCAL_API_URL, {
@@ -21,7 +21,7 @@ export default async (req, res) => {
     body: JSON.stringify({
       query: QUERY_SINGLE_PAGE,
       variables: {
-        id: slug,
+        id: uri,
       },
     }),
   });
